@@ -1,0 +1,9 @@
+{% if players %}
+  <ul>
+  {% for player in players %}
+    <button class="player-picker" id="{{ player.id }}">{{ player.name }}</button>
+  {% endfor %}
+  </ul>
+{% else %}
+  <p>No players found.</p>
+{% endif %}
