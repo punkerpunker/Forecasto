@@ -1,7 +1,7 @@
 const user_input = $("#user-input")
 const search_icon = $('#search-icon')
 const players_div = $('#replaceable-content')
-const player_picker = '.btn-block'
+const player_picker = '.btn-secondary'
 const player_card_div = $('#player-card')
 const endpoint = '/manager/'
 const delay_by_in_ms = 300
@@ -44,7 +44,6 @@ user_input.keyup(function () {
 $(document).ready(function() {
     $(document).on('click', player_picker, function () {
         let button = $('#' + this.id);
-
         $('button').removeClass('active');
         button.addClass('active');
 

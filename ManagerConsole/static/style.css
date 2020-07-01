@@ -75,20 +75,24 @@ h1 {
 #replaceable-content button {
   border: 0px solid gray; /* Invisible border */
   color: white; /* White text */
-  padding: 10px; /* Some padding */
+  padding: 12px !important; /* Some padding */
   cursor: pointer; /* Pointer/hand icon */
   background-color: Transparent;
-
+  font-size: 22px;
 }
 
-#replaceable-content button[name='1'] {
+#replaceable-content button[name='first-button'] {
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
 }
 
-#replaceable-content button[name='10'] {
+#replaceable-content button[name='last-button'] {
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
+}
+
+#replaceable-content button[name='only-button'] {
+    border-radius: 20px;
 }
 
 #replaceable-content button:not(:last-child) {
@@ -101,7 +105,7 @@ h1 {
 }
 
 /* Add a background color on hover */
-#replaceable-content .btn-block.active {
+#replaceable-content .btn-secondary.active {
   background-color: rgba(243, 38, 130, 0.3);
 }
 
@@ -110,12 +114,13 @@ h1 {
   font-family: "Verdana", serif;
   color: white;
   background-color: rgba(0, 0, 0, 0.5);
+  margin-top: 8px;
   margin-left: 20px;
   padding-top: 30px;
   padding-left: 30px;
   border-radius: 20px;
   display: none;
-  min-height: 100%;
+  /*min-height: 100% !important;*/
 }
 
 #stats-graph {
