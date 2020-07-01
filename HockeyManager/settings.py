@@ -27,10 +27,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
+    'import_export',
     'ManagerConsole.apps.ManagerconsoleConfig',
     'django.contrib.admin',
     'django.contrib.auth',
