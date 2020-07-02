@@ -3,7 +3,7 @@ const search_icon = $('#search-icon')
 const players_div = $('#replaceable-content')
 const player_picker = '.btn-secondary'
 const player_card_div = $('#player-card')
-const endpoint = '/manager/'
+const endpoint = '/'
 const delay_by_in_ms = 300
 let scheduled_function = false
 
