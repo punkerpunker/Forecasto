@@ -24,7 +24,6 @@ def players_view(request):
 
         elif div_parameter == 'player-pick':
             playoff_switcher = 1 if request.GET.get("playoff_switcher") == 'playoff' else 0
-            print(playoff_switcher)
             player = Player.objects.filter(pk=request.GET.get("player_id")).first()
             player_stats_queryset = PlayerSeasonStats.objects.filter(player=player.pk,
                                                                      postseason_flag=playoff_switcher)

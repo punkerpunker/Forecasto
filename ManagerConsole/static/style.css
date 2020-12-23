@@ -106,7 +106,7 @@ h1 {
 }
 
 /* Add a background color on hover */
-#replaceable-content .btn-secondary.active {
+#replaceable-content .btn-secondary.selection_button_active {
   background-color: rgba(243, 38, 130, 0.3);
 }
 

@@ -3,23 +3,26 @@ const search_icon = $('#search-icon')
 const players_div = $('#replaceable-content')
 const player_picker = '.btn-secondary'
 const player_card_div = $('#player-card')
+const playoff_switcher = $('#playoff-switcher')
 const endpoint = '/'
 const delay_by_in_ms = 300
 let scheduled_function = false
 
 
-let ajax_call = function (endpoint, div, request_parameters, callback) {
+let ajax_call = function (endpoint, div, request_parameters, callback = NaN) {
     $.getJSON(endpoint, request_parameters)
         .done(response => {
             // fade out the artists_div, then:
             div.fadeTo('fast', 0).promise().then(() => {
                 // replace the HTML contents
                 div.html(response['html_from_view'])
+                if (typeof callback === "function") {
+                    callback();
+                }
                 // fade-in the div with new contents
-                div.fadeTo('fast', 1)
-                callback();
+                div.fadeTo('fast', 1);
                 // stop animating search icon
-                search_icon.removeClass('blink')
+                search_icon.removeClass('blink');
             })
         })
 }
@@ -50,8 +53,8 @@ $(document).ready(function() {
         let button = $('#' + this.id);
         let playoff_switcher_value = $('input[type=\'radio\']:checked', '#playoff-switcher').val() || 'regular';
 
-        $('button').removeClass('active');
-        button.addClass('active');
+        $('button').removeClass('selection_button_active');
+        button.addClass('selection_button_active');
         const request_parameters = {
             player_id: this.id, // value of user_input: the HTML element with ID user-input
             div: 'player-pick',
@@ -59,8 +62,7 @@ $(document).ready(function() {
         }
         // start animating the search icon with the CSS class
         search_icon.addClass('blink')
-
-        // if scheduled_function is NOT false, cancel the execution of the function
+         // if scheduled_function is NOT false, cancel the execution of the function
         if (scheduled_function) {
             clearTimeout(scheduled_function)
         }
@@ -69,6 +71,18 @@ $(document).ready(function() {
         ajax_call(endpoint, player_card_div, request_parameters, function() {
             change_playoff_switcher(playoff_switcher_value)});
     })
+})
+
+$(document).on('click', '.custom-control-input', function () {
+    let playoff_switcher_value = $('input[type=\'radio\']:checked', '#playoff-switcher').val() || 'regular';
+    let player_id = $(".selection_button_active").attr('id')
+    const request_parameters = {
+        player_id: player_id, // value of user_input: the HTML element with ID user-input
+        div: 'player-pick',
+        playoff_switcher: playoff_switcher_value,
+    }
+    ajax_call(endpoint, player_card_div, request_parameters, function() {
+        change_playoff_switcher(playoff_switcher_value)});
 })
 
 
