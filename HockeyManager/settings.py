@@ -25,7 +25,7 @@ SECRET_KEY = 'y4!t_t&h2#ka-+wskmq%)6@e@ne=k-aw70%g(v^3qas10+tk5k'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['159.69.144.79']
+ALLOWED_HOSTS = ['127.0.0.1']
 
 # Application definition
 
@@ -78,13 +78,12 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'HockeyManager',
-        'USER': 'hockey_admin',
-        'PASSWORD': 'Vazhega1',
+        'USER': 'postgres',
+        'PASSWORD': 'tttBBB777',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators

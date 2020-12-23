@@ -23,8 +23,11 @@ def players_view(request):
             return JsonResponse(data={"html_from_view": html}, safe=False)
 
         elif div_parameter == 'player-pick':
+            playoff_switcher = 1 if request.GET.get("playoff_switcher") == 'playoff' else 0
+            print(playoff_switcher)
             player = Player.objects.filter(pk=request.GET.get("player_id")).first()
-            player_stats_queryset = PlayerSeasonStats.objects.filter(player=player.pk)
+            player_stats_queryset = PlayerSeasonStats.objects.filter(player=player.pk,
+                                                                     postseason_flag=playoff_switcher)
             player_stats = pd.DataFrame.from_records(player_stats_queryset.values())
             graph = create_stats_graph(player_stats)
             html = render_to_string(

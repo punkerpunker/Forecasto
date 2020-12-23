@@ -2,6 +2,17 @@
 <ul>
     <li>Age: {{ player.age }}</li>
     <li>Position: {{ player.position }}</li>
-    <li>Nationality: {{ player.nationality }}</li>
+    <li>Nationality: {{ player.nation }}</li>
 </ul>
 {{ graph|safe }}
+
+<form id="playoff-switcher">
+    <div class="custom-control custom-radio">
+      <input type="radio" id="regular-season-button" name="customRadio" class="custom-control-input" value="regular">
+      <label class="custom-control-label" for="regular-season-button">Regular Season</label>
+    </div>
+    <div class="custom-control custom-radio">
+      <input type="radio" id="playoff-button" name="customRadio" class="custom-control-input" value="playoff">
+      <label class="custom-control-label" for="playoff-button">Playoff</label>
+    </div>
+</form>

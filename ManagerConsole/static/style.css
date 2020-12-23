@@ -70,6 +70,7 @@ h1 {
     background-color: rgba(0, 0, 0, 0.5) !important;
     background-color: black;
     border-radius: 20px;
+    position: relative;
 }
 
 #replaceable-content button {
@@ -132,3 +133,10 @@ h1 {
     from {opacity: 1.0;}
     to {opacity: 0.0;}
   }
+
+#playoff-switcher {
+    width: 230px;
+    top: 30px;
+    right: 0px;
+    position: absolute;
+}

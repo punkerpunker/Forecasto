@@ -2,8 +2,8 @@ import plotly.graph_objs as go
 
 
 def create_stats_graph(player_stats_df):
-    stats = player_stats_df.sort_values('season_year')
-    year = stats.season_year.tolist()
+    stats = player_stats_df.sort_values('season')
+    year = stats.season.tolist()
 
     # Внешний вид
     fig = go.Figure(
