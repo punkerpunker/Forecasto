@@ -15,26 +15,56 @@ def players_view(request):
 
     if request.is_ajax():
         if div_parameter == 'user-input':
-            players = Player.objects.order_by('name').filter(name__icontains=request.GET.get("player_name"))[:10]
-            html = render_to_string(
-                template_name="players_list.html",
-                context={"players": players}
-            )
-            return JsonResponse(data={"html_from_view": html}, safe=False)
+            response = user_input_handler(request)
+            return response
 
         elif div_parameter == 'player-pick':
-            playoff_switcher = 1 if request.GET.get("playoff_switcher") == 'playoff' else 0
-            player = Player.objects.filter(pk=request.GET.get("player_id")).first()
-            player_stats_queryset = PlayerSeasonStats.objects.filter(player=player.pk,
-                                                                     postseason_flag=playoff_switcher)
-            player_stats = pd.DataFrame.from_records(player_stats_queryset.values())
-            graph = create_stats_graph(player_stats)
-            html = render_to_string(
-                template_name='player_card.html',
-                context={"player": player, 'graph': graph}
-            )
-            return JsonResponse(data={"html_from_view": html}, safe=False)
+            response = player_pick_handler(request)
+            return response
+
+        elif div_parameter == 'graph':
+            response = graph_filter_handler(request)
+            return response
 
     players = Player.objects.order_by('name')[:10]
     ctx["players"] = players
     return render(request, template, context=ctx)
+
+
+def user_input_handler(request):
+    players = Player.objects.order_by('name').filter(name__icontains=request.GET.get("player_name"))[:10]
+    html = render_to_string(
+        template_name="players_list.html",
+        context={"players": players}
+    )
+    return JsonResponse(data={"html_from_view": html}, safe=False)
+
+
+def player_pick_handler(request):
+    player, graph = get_graph(request)
+    html = render_to_string(
+        template_name='player_card.html',
+        context={"player": player, 'graph': graph}
+    )
+    return JsonResponse(data={"html_from_view": html}, safe=False)
+
+
+def graph_filter_handler(request):
+    print('BOoo!')
+    player, graph = get_graph(request)
+    html = render_to_string(
+        template_name='graph.html',
+        context={'graph': graph}
+    )
+    return JsonResponse(data={"html_from_view": html}, safe=False)
+
+
+def get_graph(request):
+    playoff_switcher = 1 if request.GET.get("playoff_switcher") == 'playoff' else 0
+    player = Player.objects.filter(pk=request.GET.get("player_id")).first()
+    player_stats_queryset = PlayerSeasonStats.objects.filter(player=player.pk,
+                                                             postseason_flag=playoff_switcher)
+    player_stats = pd.DataFrame.from_records(player_stats_queryset.values())
+    graph = create_stats_graph(player_stats)
+    return player, graph
+

@@ -1,8 +1,13 @@
 import plotly.graph_objs as go
+import pandas as pd
 
 
 def create_stats_graph(player_stats_df):
-    stats = player_stats_df.groupby(['season'])['goals', 'assists', 'games'].sum().reset_index().sort_values('season')
+    try:
+        stats = player_stats_df.groupby(['season'])['goals', 'assists',
+                                                    'games'].sum().reset_index().sort_values('season')
+    except KeyError:
+        stats = pd.DataFrame([{'season': '', 'goals': '', 'assists': '', 'games': ''}])
     year = [str(x)[2:] for x in stats.season.tolist()]
 
     # Внешний вид

@@ -3,7 +3,6 @@ const search_icon = $('#search-icon')
 const players_div = $('#replaceable-content')
 const player_picker = '.btn-secondary'
 const player_card_div = $('#player-card')
-const playoff_switcher = $('#playoff-switcher')
 const endpoint = '/'
 const delay_by_in_ms = 300
 let scheduled_function = false
@@ -12,16 +11,12 @@ let scheduled_function = false
 let ajax_call = function (endpoint, div, request_parameters, callback = NaN) {
     $.getJSON(endpoint, request_parameters)
         .done(response => {
-            // fade out the artists_div, then:
             div.fadeTo('fast', 0).promise().then(() => {
-                // replace the HTML contents
                 div.html(response['html_from_view'])
                 if (typeof callback === "function") {
                     callback();
                 }
-                // fade-in the div with new contents
                 div.fadeTo('fast', 1);
-                // stop animating search icon
                 search_icon.removeClass('blink');
             })
         })
@@ -76,15 +71,16 @@ $(document).ready(function() {
 $(document).on('click', '.custom-control-input', function () {
     let playoff_switcher_value = $('input[type=\'radio\']:checked', '#playoff-switcher').val() || 'regular';
     let player_id = $(".selection_button_active").attr('id')
+    let div = $('#graph')
+
     const request_parameters = {
         player_id: player_id, // value of user_input: the HTML element with ID user-input
-        div: 'player-pick',
+        div: div.attr('id'),
         playoff_switcher: playoff_switcher_value,
     }
-    ajax_call(endpoint, player_card_div, request_parameters, function() {
+    if (scheduled_function) {
+        clearTimeout(scheduled_function)
+    }
+    ajax_call(endpoint, div, request_parameters, function() {
         change_playoff_switcher(playoff_switcher_value)});
 })
-
-
-
-

@@ -4,7 +4,8 @@
     <li>Position: {{ player.position }}</li>
     <li>Nationality: {{ player.nation }}</li>
 </ul>
-{{ graph|safe }}
+
+{% include 'graph.html' %}
 
 <form id="playoff-switcher">
     <div class="custom-control custom-radio">
