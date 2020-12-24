@@ -7,7 +7,9 @@ def create_stats_graph(player_stats_df):
         stats = player_stats_df.groupby(['season'])['goals', 'assists',
                                                     'games'].sum().reset_index().sort_values('season')
     except KeyError:
+        # Если нет данных по игроку (никогда не играл в плейофф, например)
         stats = pd.DataFrame([{'season': '', 'goals': '', 'assists': '', 'games': ''}])
+
     year = [str(x)[2:] for x in stats.season.tolist()]
 
     # Внешний вид
@@ -37,7 +39,7 @@ def create_stats_graph(player_stats_df):
     fig.add_trace(go.Bar(x=year, y=stats.assists.tolist(), name='Assists',  marker_color='rgba(173, 216, 230, 0.8)'))
     fig.add_trace(go.Scatter(x=year, y=stats.games.tolist(), name='Games', line=dict(color='royalblue', width=3)))
     # Стакаем голы и ассисты
-    fig.update_layout(barmode='stack')
+    fig.update_layout(barmode='stack', autosize=True)
 
     graph = fig.to_html(full_html=True)
     return graph

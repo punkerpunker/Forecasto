@@ -26,13 +26,13 @@ def players_view(request):
             response = graph_filter_handler(request)
             return response
 
-    players = Player.objects.order_by('name')[:10]
+    players = Player.objects.order_by('name')[:11]
     ctx["players"] = players
     return render(request, template, context=ctx)
 
 
 def user_input_handler(request):
-    players = Player.objects.order_by('name').filter(name__icontains=request.GET.get("player_name"))[:10]
+    players = Player.objects.order_by('name').filter(name__icontains=request.GET.get("player_name"))[:11]
     html = render_to_string(
         template_name="players_list.html",
         context={"players": players}
@@ -50,7 +50,6 @@ def player_pick_handler(request):
 
 
 def graph_filter_handler(request):
-    print('BOoo!')
     player, graph = get_graph(request)
     html = render_to_string(
         template_name='graph.html',

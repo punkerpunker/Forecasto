@@ -7,16 +7,15 @@ const endpoint = '/'
 const delay_by_in_ms = 300
 let scheduled_function = false
 
-
 let ajax_call = function (endpoint, div, request_parameters, callback = NaN) {
     $.getJSON(endpoint, request_parameters)
         .done(response => {
-            div.fadeTo('fast', 0).promise().then(() => {
+            div.fadeTo(200, 0).promise().then(() => {
                 div.html(response['html_from_view'])
                 if (typeof callback === "function") {
                     callback();
                 }
-                div.fadeTo('fast', 1);
+                div.fadeTo(200, 1);
                 search_icon.removeClass('blink');
             })
         })
@@ -25,6 +24,24 @@ let ajax_call = function (endpoint, div, request_parameters, callback = NaN) {
 let change_playoff_switcher = function (value) {
     $("input[type=\'radio\']", '#playoff-switcher').val([value], '#playoff-switcher')
 }
+
+
+$(document).on('click', '.custom-control-input', function () {
+    let playoff_switcher_value = $('input[type=\'radio\']:checked', '#playoff-switcher').val() || 'regular';
+    let player_id = $(".selection_button_active").attr('id')
+    let div = $('#graph')
+
+    const request_parameters = {
+        player_id: player_id, // value of user_input: the HTML element with ID user-input
+        div: div.attr('id'),
+        playoff_switcher: playoff_switcher_value,
+    }
+    if (scheduled_function) {
+        clearTimeout(scheduled_function)
+    }
+    ajax_call(endpoint, div, request_parameters, function() {
+        change_playoff_switcher(playoff_switcher_value)});
+})
 
 user_input.keyup(function () {
     const request_parameters = {
@@ -68,19 +85,28 @@ $(document).ready(function() {
     })
 })
 
-$(document).on('click', '.custom-control-input', function () {
-    let playoff_switcher_value = $('input[type=\'radio\']:checked', '#playoff-switcher').val() || 'regular';
-    let player_id = $(".selection_button_active").attr('id')
-    let div = $('#graph')
 
-    const request_parameters = {
-        player_id: player_id, // value of user_input: the HTML element with ID user-input
-        div: div.attr('id'),
-        playoff_switcher: playoff_switcher_value,
-    }
-    if (scheduled_function) {
-        clearTimeout(scheduled_function)
-    }
-    ajax_call(endpoint, div, request_parameters, function() {
-        change_playoff_switcher(playoff_switcher_value)});
+$(document).ready(function() {
+    $(document).on('input', '#num-games-slider', function() {
+        let num_games_field = $("#num-games-field");
+        num_games_field.val(this.value)
+    })
+})
+
+$(document).ready(function() {
+    $(document).on('keyup', '#num-games-field', function() {
+        let num_games_slider = $("#num-games-slider");
+        num_games_slider.val(this.value)
+    })
+})
+
+$(document).ready(function() {
+    $(document).on('keyup', '#num-games-field', function() {
+        let num_games_field = $("#num-games-field");
+        let max = parseInt(num_games_field.attr('max'));
+
+        if (parseInt(this.value) > max) {
+            num_games_field.val(max)
+        }
+    })
 })
