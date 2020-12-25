@@ -19,6 +19,16 @@
 </form>
 
 <form id="predict" class="d-flex">
+    <div class="leagues-label">
+        League:
+    </div>
+    <div class="leagues-selector">
+        <select>
+            {% for league in leagues %}
+                <option value="{{ league }}">{{ league }}</option>
+            {% endfor %}
+        </select>
+    </div>
     <div class="games-label">
         Games:
     </div>

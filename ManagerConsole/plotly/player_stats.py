@@ -7,18 +7,12 @@ def create_stats_graph(player_stats_df, predict=False, predict_params=None):
         stats = player_stats_df.groupby(['season'])['goals', 'assists',
                                                     'games'].sum().reset_index().sort_values('season')
     except KeyError:
-        # Если нет данных по игроку (никогда не играл в плейофф, например)
         stats = pd.DataFrame([{'season': '', 'goals': '', 'assists': '', 'games': ''}])
 
     goals_colors = ['rgba(243, 38, 130, 0.5)'] * stats.shape[0]
     assists_colors = ['rgba(173, 216, 230, 0.8)'] * stats.shape[0]
     if predict:
-        goals = int(stats.goals.mean())
-        assists = int(stats.assists.mean())
-        games = predict_params['games']
-        season = '2021-22'
-        stats = stats.append(pd.DataFrame([{'goals': goals, 'assists': assists,
-                                            'season': season, 'games': games}]))
+        stats = make_predict(stats, predict_params)
         goals_colors.append('green')
         assists_colors.append('blue')
 
@@ -55,3 +49,13 @@ def create_stats_graph(player_stats_df, predict=False, predict_params=None):
 
     graph = fig.to_html(full_html=True)
     return graph
+
+
+def make_predict(stats, predict_params):
+    goals = int(stats.goals.mean())
+    assists = int(stats.assists.mean())
+    games = predict_params['games']
+    season = '2021-22'
+    stats = stats.append(pd.DataFrame([{'goals': goals, 'assists': assists,
+                                        'season': season, 'games': games}]))
+    return stats

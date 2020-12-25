@@ -8,6 +8,9 @@ from .models import Player, PlayerSeasonStats
 from .plotly import create_stats_graph
 
 
+leagues = ["NHL", "KHL", "VHL"]
+
+
 def players_view(request):
     ctx = {}
     template = 'index.html'
@@ -46,7 +49,7 @@ def player_pick_handler(request):
     player, graph = get_graph(request)
     html = render_to_string(
         template_name='player_card.html',
-        context={"player": player, 'graph': graph}
+        context={"player": player, 'graph': graph, 'leagues': leagues}
     )
     return JsonResponse(data={"html_from_view": html}, safe=False)
 
