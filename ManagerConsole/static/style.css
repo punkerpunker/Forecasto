@@ -191,6 +191,8 @@ h1 {
 }
 
 #predict-button {
+    background-color: rgba(243, 38, 130, 0.3);
+    border-color: #2f080e #2f080e hsl(351, 68%, 1.5%);
     margin-right: 15px;
     margin-left: 25px;
 }

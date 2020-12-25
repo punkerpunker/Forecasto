@@ -23,7 +23,9 @@ def players_view(request):
             return response
 
         elif div_parameter == 'graph':
-            response = graph_filter_handler(request)
+            predict = bool(request.GET.get('predict'))
+            predict_params = dict(games=request.GET.get('games'))
+            response = graph_filter_handler(request, predict=predict, predict_params=predict_params)
             return response
 
     players = Player.objects.order_by('name')[:11]
@@ -49,8 +51,8 @@ def player_pick_handler(request):
     return JsonResponse(data={"html_from_view": html}, safe=False)
 
 
-def graph_filter_handler(request):
-    player, graph = get_graph(request)
+def graph_filter_handler(request, predict, predict_params=None):
+    player, graph = get_graph(request, predict, predict_params)
     html = render_to_string(
         template_name='graph.html',
         context={'graph': graph}
@@ -58,12 +60,12 @@ def graph_filter_handler(request):
     return JsonResponse(data={"html_from_view": html}, safe=False)
 
 
-def get_graph(request):
+def get_graph(request, predict=False, predict_params=None):
     playoff_switcher = 1 if request.GET.get("playoff_switcher") == 'playoff' else 0
     player = Player.objects.filter(pk=request.GET.get("player_id")).first()
     player_stats_queryset = PlayerSeasonStats.objects.filter(player=player.pk,
                                                              postseason_flag=playoff_switcher)
     player_stats = pd.DataFrame.from_records(player_stats_queryset.values())
-    graph = create_stats_graph(player_stats)
+    graph = create_stats_graph(player_stats, predict, predict_params)
     return player, graph
 

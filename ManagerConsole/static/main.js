@@ -25,7 +25,6 @@ let change_playoff_switcher = function (value) {
     $("input[type=\'radio\']", '#playoff-switcher').val([value], '#playoff-switcher')
 }
 
-
 $(document).on('click', '.custom-control-input', function () {
     let playoff_switcher_value = $('input[type=\'radio\']:checked', '#playoff-switcher').val() || 'regular';
     let player_id = $(".selection_button_active").attr('id')
@@ -35,6 +34,26 @@ $(document).on('click', '.custom-control-input', function () {
         player_id: player_id, // value of user_input: the HTML element with ID user-input
         div: div.attr('id'),
         playoff_switcher: playoff_switcher_value,
+    }
+    if (scheduled_function) {
+        clearTimeout(scheduled_function)
+    }
+    ajax_call(endpoint, div, request_parameters, function() {
+        change_playoff_switcher(playoff_switcher_value)});
+})
+
+$(document).on('click', '#predict-button', function () {
+    let playoff_switcher_value = $('input[type=\'radio\']:checked', '#playoff-switcher').val() || 'regular';
+    let player_id = $(".selection_button_active").attr('id')
+    let div = $('#graph')
+    let games = $("#num-games-field").val()
+
+    const request_parameters = {
+        player_id: player_id, // value of user_input: the HTML element with ID user-input
+        div: div.attr('id'),
+        playoff_switcher: playoff_switcher_value,
+        predict: true,
+        games: games,
     }
     if (scheduled_function) {
         clearTimeout(scheduled_function)
@@ -84,7 +103,6 @@ $(document).ready(function() {
             change_playoff_switcher(playoff_switcher_value)});
     })
 })
-
 
 $(document).ready(function() {
     $(document).on('input', '#num-games-slider', function() {
