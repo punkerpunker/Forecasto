@@ -47,6 +47,7 @@ $(document).on('click', '#predict-button', function () {
     let player_id = $(".selection_button_active").attr('id')
     let div = $('#graph')
     let games = $("#num-games-field").val()
+    let league = $("#")
 
     const request_parameters = {
         player_id: player_id, // value of user_input: the HTML element with ID user-input

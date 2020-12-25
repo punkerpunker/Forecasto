@@ -175,25 +175,41 @@ h1 {
 }
 
 .input-slider {
-    width: 75%;
+    width: 55%;
     display: flex;
 }
 
 .games-label {
     width: 10%;
+    margin-left: 20px;
     margin-right: 10px;
+    font-size: 22px;
+    padding-top: 1px;
 }
 
 .predict-games-input {
     width: 5%;
     display: flex;
+}
 
+.leagues-label {
+    margin-right: 20px;
+    font-size: 22px;
+}
+
+.input-league-select {
+    display: flex;
+    background-color: rgba(243, 38, 130, 0.3);
+    color: white;
+    border-color: black;
+    margin-right: 20px;
+    text-align: center;
+    font-size: 16px;
 }
 
 #predict-button {
     background-color: rgba(243, 38, 130, 0.3);
-    border-color: #2f080e #2f080e hsl(351, 68%, 1.5%);
+    border-color: black;
     margin-right: 15px;
     margin-left: 25px;
 }
-
