@@ -151,7 +151,7 @@ h1 {
   border-radius: 5px;
   background: #d3d3d3;
   outline: none;
-  opacity: 0.7;
+  opacity: 0.8;
   -webkit-transition: .2s;
   transition: opacity .2s;
 }
@@ -166,8 +166,16 @@ h1 {
   width: 25px;
   height: 25px;
   border-radius: 50%;
-  background: #4CAF50;
+  background-color: rgba(243, 38, 130, 0.9);
   cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  cursor: pointer; /* Cursor on hover */
+  background-color: rgba(243, 38, 130, 0.7);
+
 }
 
 #predict {
