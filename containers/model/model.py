@@ -34,12 +34,12 @@ class Model:
         return cls(model_goals, model_assists, features)
     
     def predict(self, player_id, postseason, num_games, league):
-        df = self.build_features(player_id, postseason).tail(1)
+        df = self.build_features(player_id, postseason).tail(1).reset_index(drop=True)
         df = self.set_num_games(df, num_games)
         df = self.set_league(df, league)
         goals = self.model_goals.predict(df[self.features])[0]
         assists = self.model_assists.predict(df[self.features])[0]
-        return {'goals': max(goals, 0), 'assists': max(assists, 0)}
+        return {'goals': max(goals, 0), 'assists': max(assists, 0), 'season': df.loc[0]['season']}
     
     @staticmethod
     def set_num_games(df, num_games):

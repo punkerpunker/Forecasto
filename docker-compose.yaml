@@ -7,12 +7,12 @@ services:
     ports:
       - 1769:1769
     command: python3 app.py
-    networks: 
+    networks:
       - postgresql-front
     environment:
       - PORT=1769
       - DB_NAME=postgres
-      - DB_HOSTNAME=localhost
+      - DB_HOSTNAME=postgresql
       - DB_USER=postgres
       - DB_PASSWORD=tttBBB777
       

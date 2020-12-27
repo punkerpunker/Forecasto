@@ -1,5 +1,6 @@
 import plotly.graph_objs as go
 import pandas as pd
+from ..predict import predict
 
 
 def create_stats_graph(player_stats_df, predict=False, predict_params=None):
@@ -12,7 +13,7 @@ def create_stats_graph(player_stats_df, predict=False, predict_params=None):
     goals_colors = ['rgba(243, 38, 130, 0.5)'] * stats.shape[0]
     assists_colors = ['rgba(173, 216, 230, 0.8)'] * stats.shape[0]
     if predict:
-        stats = make_predict(stats, predict_params)
+        stats = make_prediction(stats, predict_params)
         goals_colors.append('green')
         assists_colors.append('blue')
 
@@ -51,11 +52,13 @@ def create_stats_graph(player_stats_df, predict=False, predict_params=None):
     return graph
 
 
-def make_predict(stats, predict_params):
-    goals = int(stats.goals.mean())
-    assists = int(stats.assists.mean())
-    games = predict_params['games']
-    season = '2021-22'
+def make_prediction(stats, predict_params):
+    prediction = predict(predict_params['player_id'], predict_params['postseason_flag'],
+                         predict_params['num_games'], predict_params['league'])
+    games = predict_params['num_games']
+    goals = int(prediction['goals'])
+    assists = int(prediction['assists'])
+    season = prediction['season']
     stats = stats.append(pd.DataFrame([{'goals': goals, 'assists': assists,
                                         'season': season, 'games': games}]))
     return stats
