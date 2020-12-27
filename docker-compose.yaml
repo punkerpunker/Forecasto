@@ -21,7 +21,7 @@ services:
       context: containers/web
     container_name: web
     ports:
-      - 8000:8000
+      - 80:8000
     command: python3 manage.py runserver 0.0.0.0:8000
     networks: 
       - postgresql-front
