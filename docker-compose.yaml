@@ -64,12 +64,5 @@ services:
       - postgresql
       
 networks:
-  front:
-    driver: bridge
   postgresql-front:
     driver: bridge
-  tor-front:
-    ipam:
-      driver: default
-      config:
-        - subnet: "172.16.238.0/24"
