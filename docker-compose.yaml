@@ -22,7 +22,7 @@ services:
     container_name: web
     ports:
       - 8000:8000
-    command: python django/manage.py runserver
+    command: python3 manage.py runserver 0.0.0.0:8000
     networks: 
       - postgresql-front
     environment:
@@ -31,6 +31,7 @@ services:
       - DB_HOSTNAME=postgresql
       - DB_USER=postgres
       - DB_PASSWORD=tttBBB777
+      - MODEL_HOST=model
   
   postgresql:
     container_name: postgresql

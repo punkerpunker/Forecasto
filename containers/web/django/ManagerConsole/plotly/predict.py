@@ -1,6 +1,8 @@
 import requests
+import os
 
-endpoint = 'http://localhost:1769/predict'
+model_host = os.environ.get('MODEL_HOST')
+endpoint = 'http://model:1769/predict'
 
 
 def predict(player_id, postseason_flag, num_games, league):
