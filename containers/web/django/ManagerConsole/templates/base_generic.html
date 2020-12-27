@@ -16,10 +16,11 @@
       {% block sidebar %}
         <ul class="sidebar-nav">
           <li><a href="{% url "HockeyManager:index" %}">All players</a></li>
+          <li class="powered-by">Powered by: <a href="https://github.com/punkerpunker">Gleb Vazhenin</a></li>
         </ul>
      {% endblock %}
       </div>
-      <div class="col-10 ">{% block content %}{% endblock %}</div>
+      <div class="col-10">{% block content %}{% endblock %}</div>
     </div>
   </div>
 {% load static %}
