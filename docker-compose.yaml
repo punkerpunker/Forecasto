@@ -5,10 +5,10 @@ services:
       context: containers/model
     container_name: model
     ports:
-      - 5000:5000
-    command: python app.py
+      - 1769:1769
+    command: python3 app.py
     networks: 
-      - front
+      - postgresql-front
     environment:
       - PORT=1769
       - DB_NAME=postgres
@@ -24,11 +24,61 @@ services:
       - 8000:8000
     command: python manage.py runserver
     networks: 
-      - front
+      - postgresql-front
     environment:
       - PORT=8000
+  
+  postgresql:
+    container_name: postgresql
+    restart: always
+    image: pgrouting/pgrouting:13-3.0-3.1.0
+    volumes:
+      - ./containers/postgresql/data:/var/lib/postgresql/data
+      - ./containers/postgresql/tables.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=tttBBB777
+    networks:
+      - postgresql-front
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: vazheningleb@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: tttBBB777
+      PGADMIN_LISTEN_PORT: 5050
+      PGADMIN_LISTEN_ADDRESS: 0.0.0.0
+    ports:
+      - "5050:5050"
+    networks:
+      - postgresql-front
+    restart: unless-stopped
+    depends_on:
+      - postgresql
+
+  tor:
+    restart: unless-stopped
+    container_name: tor
+    ports:
+      - 9050:9050
+      - 9051:9051
+    image: dperson/torproxy
+    environment:
+      - PASSWORD=tttBBB777
+    networks:
+      tor-front:
+        ipv4_address: 172.16.238.2
 
       
 networks:
   front:
     driver: bridge
+  postgresql-front:
+    driver: bridge
+  tor-front:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.16.238.0/24"

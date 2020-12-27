@@ -11,8 +11,6 @@ RUN cd Python-3.* && ./configure && make -j8 && make install
 
 COPY requirements.txt .
 RUN pip3 install -r requirements.txt
-RUN pip3 install tqdm
 
 COPY app.py model.py features.py swagger.yaml ./
 COPY source/model_assists.pkl source/model_goals.pkl source/features.pkl ./source/
-RUN python3 app.py
