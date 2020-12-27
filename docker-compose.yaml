@@ -22,11 +22,15 @@ services:
     container_name: web
     ports:
       - 8000:8000
-    command: python manage.py runserver
+    command: python django/manage.py runserver
     networks: 
       - postgresql-front
     environment:
       - PORT=8000
+      - DB_NAME=HockeyManager
+      - DB_HOSTNAME=postgresql
+      - DB_USER=postgres
+      - DB_PASSWORD=tttBBB777
   
   postgresql:
     container_name: postgresql

@@ -1,0 +1,44 @@
+<h2>{{ player.name }}</h2>
+<ul>
+    <li>Age: {{ player.age }}</li>
+    <li>Position: {{ player.position }}</li>
+    <li>Nationality: {{ player.nation }}</li>
+</ul>
+
+{% include 'graph.html' %}
+
+<form id="playoff-switcher">
+    <div class="custom-control custom-radio">
+      <input type="radio" id="regular-season-button" name="customRadio" class="custom-control-input" value="regular">
+      <label class="custom-control-label" for="regular-season-button">Regular Season</label>
+    </div>
+    <div class="custom-control custom-radio">
+      <input type="radio" id="playoff-button" name="customRadio" class="custom-control-input" value="playoff">
+      <label class="custom-control-label" for="playoff-button">Playoff</label>
+    </div>
+</form>
+
+<form id="predict" class="d-flex">
+    <div class="leagues-label">
+        League:
+    </div>
+    <div class="form-group input-league">
+        <select class="custom-select input-league-select" id="input-league-select" required>
+            {% for league in leagues %}
+                <option class="league-option" value="{{ league }}" selected>{{ league }} </option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="games-label">
+        Games:
+    </div>
+    <div class="input-slider">
+        <input type="range" min="1" max="80" value="40" class="slider" id="num-games-slider">
+    </div>
+    <div class="predict-games-input input-container">
+        <input type="text" id="num-games-field" min="1" max="80" value="40">
+    </div>
+    <div class="predict-button">
+        <button type="button" class="btn btn-success" id="predict-button">Predict</button>
+    </div>
+</form>
