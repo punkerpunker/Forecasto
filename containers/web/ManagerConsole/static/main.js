@@ -47,14 +47,15 @@ $(document).on('click', '#predict-button', function () {
     let player_id = $(".selection_button_active").attr('id')
     let div = $('#graph')
     let games = $("#num-games-field").val()
-    // let league = $("#leagur")
+    let league = $("#input-league-select").val();
 
     const request_parameters = {
         player_id: player_id, // value of user_input: the HTML element with ID user-input
         div: div.attr('id'),
         playoff_switcher: playoff_switcher_value,
         predict: true,
-        games: games,
+        num_games: games,
+        league: league,
     }
     if (scheduled_function) {
         clearTimeout(scheduled_function)

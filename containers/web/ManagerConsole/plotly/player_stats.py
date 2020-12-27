@@ -1,6 +1,12 @@
 import plotly.graph_objs as go
 import pandas as pd
-from ..predict import predict
+from .predict import predict
+
+
+assist_color = 'rgba(173, 216, 230, 0.6)'
+goal_color = 'rgba(243, 38, 130, 0.6)'
+marker_line_color = 'rgba(228, 228, 218, 0.8)'
+prediction_line_color = 'lightgreen'
 
 
 def create_stats_graph(player_stats_df, predict=False, predict_params=None):
@@ -10,12 +16,14 @@ def create_stats_graph(player_stats_df, predict=False, predict_params=None):
     except KeyError:
         stats = pd.DataFrame([{'season': '', 'goals': '', 'assists': '', 'games': ''}])
 
-    goals_colors = ['rgba(243, 38, 130, 0.5)'] * stats.shape[0]
-    assists_colors = ['rgba(173, 216, 230, 0.8)'] * stats.shape[0]
+    goals_colors = [goal_color] * stats.shape[0]
+    assists_colors = [assist_color] * stats.shape[0]
+    marker_line_colors = [marker_line_color] * stats.shape[0]
     if predict:
         stats = make_prediction(stats, predict_params)
-        goals_colors.append('green')
-        assists_colors.append('blue')
+        goals_colors.append(goal_color)
+        assists_colors.append(assist_color)
+        marker_line_colors.append(prediction_line_color)
 
     year = [str(x)[2:] for x in stats.season.tolist()]
 
@@ -42,8 +50,10 @@ def create_stats_graph(player_stats_df, predict=False, predict_params=None):
     fig.update_yaxes(tickfont=dict(family='Verdana', size=18, color='white'))
 
     # Данные
-    fig.add_trace(go.Bar(x=year, y=stats.goals.tolist(), name='Goals', marker_color=goals_colors))
-    fig.add_trace(go.Bar(x=year, y=stats.assists.tolist(), name='Assists',  marker_color=assists_colors))
+    fig.add_trace(go.Bar(x=year, y=stats.goals.tolist(), name='Goals',
+                         marker_color=goals_colors, marker_line_width=3, marker_line_color=marker_line_colors))
+    fig.add_trace(go.Bar(x=year, y=stats.assists.tolist(), name='Assists',
+                         marker_color=assists_colors, marker_line_width=3, marker_line_color=marker_line_colors))
     fig.add_trace(go.Scatter(x=year, y=stats.games.tolist(), name='Games', line=dict(color='royalblue', width=3)))
     # Стакаем голы и ассисты
     fig.update_layout(barmode='stack', autosize=True)
@@ -53,12 +63,14 @@ def create_stats_graph(player_stats_df, predict=False, predict_params=None):
 
 
 def make_prediction(stats, predict_params):
-    prediction = predict(predict_params['player_id'], predict_params['postseason_flag'],
+    postseason_flag = 1 if predict_params['postseason_flag'] == 'playoff' else 0
+    prediction = predict(predict_params['player_id'], postseason_flag,
                          predict_params['num_games'], predict_params['league'])
     games = predict_params['num_games']
     goals = int(prediction['goals'])
     assists = int(prediction['assists'])
     season = prediction['season']
+    print(season)
     stats = stats.append(pd.DataFrame([{'goals': goals, 'assists': assists,
                                         'season': season, 'games': games}]))
     return stats

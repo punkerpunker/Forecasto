@@ -8,7 +8,7 @@ from .models import Player, PlayerSeasonStats
 from .plotly import create_stats_graph
 
 
-leagues = ["NHL", "KHL", "VHL"]
+leagues = ["NHL", "VHL", "KHL"]
 
 
 def players_view(request):
@@ -27,7 +27,10 @@ def players_view(request):
 
         elif div_parameter == 'graph':
             predict = bool(request.GET.get('predict'))
-            predict_params = dict(games=request.GET.get('games'))
+            predict_params = dict(num_games=request.GET.get('num_games'),
+                                  player_id=request.GET.get('player_id'),
+                                  postseason_flag=request.GET.get('playoff_switcher'),
+                                  league=request.GET.get('league'))
             response = graph_filter_handler(request, predict=predict, predict_params=predict_params)
             return response
 

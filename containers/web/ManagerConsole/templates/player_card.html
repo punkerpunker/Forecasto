@@ -23,9 +23,9 @@
         League:
     </div>
     <div class="form-group input-league">
-        <select class="custom-select input-league-select" required>
+        <select class="custom-select input-league-select" id="input-league-select" required>
             {% for league in leagues %}
-                <option class="league-option" value="{{ league }}">{{ league }}</option>
+                <option class="league-option" value="{{ league }}" selected>{{ league }} </option>
             {% endfor %}
         </select>
     </div>

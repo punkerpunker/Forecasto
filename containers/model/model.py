@@ -17,6 +17,7 @@ engine = sqlalchemy.create_engine(f'postgresql+psycopg2://{db_user}:{db_password
 def __init__(self):
     pass
 
+
 Features.__init__ = __init__
 
 
@@ -48,7 +49,8 @@ class Model:
     
     @staticmethod
     def set_league(df, league):
-        rating = pd.read_sql(f"select league_rating from league_rating where league = '{league}'", engine).loc[0]['league_rating']
+        rating = pd.read_sql(f"select league_rating from league_rating where league = '{league}'",
+                             engine).loc[0]['league_rating']
         df['league_rating'] = rating
         return df
         
@@ -56,7 +58,7 @@ class Model:
         f = Features()
         df = self.get_player_stats(player_id, postseason)
         new_season = self.add_new_season(df)
-        f.merged = df.append(new_season)
+        f.merged = df.append(new_season, sort=False)
         f.merged = f.merged[[x for x in f.merged if '_lag' not in x]]
         f.merged.drop([f'{x}_{y}' for x in f.aggregates for y in f.stats_columns], axis=1, inplace=True)
         f.merged['draft_entry'] = f.merged['draft_entry'].astype(float)
@@ -65,14 +67,18 @@ class Model:
         f.get_lags()
         f.get_aggregates()
         return f.merged
-    
-    def get_player_stats(self, player_id, postseason=0):
-        df = pd.read_sql(f"select * from features where player_id = '{player_id}' and postseason_flag = {postseason}", engine)
+
+    @staticmethod
+    def get_player_stats(player_id, postseason=0):
+        df = pd.read_sql(f"select * from features where player_id = '{player_id}' and postseason_flag = {postseason}",
+                         engine)
         df = df.sort_values('season')
         return df
-    
-    def add_new_season(self, df):
+
+    @staticmethod
+    def add_new_season(df):
         new_season = df.tail(1).copy()
-        new_season['season'] = new_season['season'].map(lambda x: str(int(x.split('-')[0])+1)+'-'+str(int(x.split('-')[1])+1))
+        new_season['season'] = new_season['season'].map(lambda x:
+                                                        str(int(x.split('-')[0])+1)+'-'+str(int(x.split('-')[1])+1))
         new_season['year'] += pd.offsets.DateOffset(years=1)
-        return df
+        return new_season
