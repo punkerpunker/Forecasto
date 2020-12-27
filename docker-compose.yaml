@@ -62,20 +62,6 @@ services:
     restart: unless-stopped
     depends_on:
       - postgresql
-
-  tor:
-    restart: unless-stopped
-    container_name: tor
-    ports:
-      - 9050:9050
-      - 9051:9051
-    image: dperson/torproxy
-    environment:
-      - PASSWORD=tttBBB777
-    networks:
-      tor-front:
-        ipv4_address: 172.16.238.2
-
       
 networks:
   front:
