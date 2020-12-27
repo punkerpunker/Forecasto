@@ -1,0 +1,42 @@
+openapi: 3.0.0
+info:
+  title: HockeyManager API
+  description: API Используемое в проекте HockeyManager
+  version: 0.0.1
+
+servers:
+  - url: http://127.0.0.1:1769/
+    description: Server
+
+paths:
+  /predict: 
+    get: 
+      operationId: app.predict
+      parameters:
+        - name: player_id
+          in: query
+          schema:
+            type: string
+          required: true
+        - name: postseason_flag 
+          in: query 
+          schema: 
+            type: number
+          required: true
+        - name: num_games
+          in: query
+          schema: 
+            type: number
+          required: true
+        - name: league
+          in: query
+          schema: 
+            type: string
+          required: true
+      responses: 
+        '200': 
+          description: Players's stats
+          content:
+            application/json:
+              schema:
+                type: object

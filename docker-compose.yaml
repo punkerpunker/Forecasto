@@ -1,0 +1,34 @@
+version: "3.3"
+services:
+  model:
+    build:
+      context: containers/model
+    container_name: model
+    ports:
+      - 5000:5000
+    command: python app.py
+    networks: 
+      - front
+    environment:
+      - PORT=1769
+      - DB_NAME=postgres
+      - DB_HOSTNAME=localhost
+      - DB_USER=postgres
+      - DB_PASSWORD=tttBBB777
+      
+  web:
+    build:
+      context: containers/web
+    container_name: web
+    ports:
+      - 8000:8000
+    command: python manage.py runserver
+    networks: 
+      - front
+    environment:
+      - PORT=8000
+
+      
+networks:
+  front:
+    driver: bridge
