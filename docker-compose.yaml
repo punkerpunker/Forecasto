@@ -33,7 +33,7 @@ services:
       - 443:443
       - 80:80
     volumes:
-      - static_files:/app/HockeyManager/static/
+      - /django/static:/django/static/
       - certs:/etc/nginx/certs
       - html:/usr/share/nginx/html
       - vhost:/etc/nginx/vhost.d

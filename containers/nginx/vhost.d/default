@@ -1,5 +1,5 @@
 location /static/ {
-        alias /app/HockeyManager/static/;
+        alias /django/static/;
         autoindex on;
         add_header Access-Control-Allow-Origin *;
     }
