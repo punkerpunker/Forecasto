@@ -53,9 +53,8 @@ services:
     image: jrcs/letsencrypt-nginx-proxy-companion
     container_name: nginx-proxy-lets-encrypt
     depends_on:
-      - "nginx-proxy"
+      - nginx-proxy
     volumes:
-      - NGINX_PROXY_CONTAINER=ngnix-proxy
       - certs:/etc/nginx/certs:rw
       - vhost:/etc/nginx/vhost.d
       - html:/usr/share/nginx/html
