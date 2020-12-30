@@ -57,6 +57,7 @@ services:
     depends_on:
       - "nginx-proxy"
     volumes:
+      - NGINX_PROXY_CONTAINER=ngnix-proxy
       - certs:/etc/nginx/certs:rw
       - vhost:/etc/nginx/vhost.d
       - html:/usr/share/nginx/html
