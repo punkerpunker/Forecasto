@@ -37,7 +37,7 @@ services:
       - 443:443
       - 80:80
     volumes:
-      - /static/:/home/app/web/staticfiles
+      - static_volume:/home/app/web/staticfiles
       - certs:/etc/nginx/certs
       - html:/usr/share/nginx/html
       - vhost:/etc/nginx/vhost.d
@@ -48,7 +48,7 @@ services:
   nginx-proxy-letsencrypt:
     image: jrcs/letsencrypt-nginx-proxy-companion
     env_file:
-      - .env.staging.proxy-companion
+      - containers/nginx-proxy-letsencrypt
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - certs:/etc/nginx/certs
@@ -87,3 +87,10 @@ services:
 networks:
   postgresql-front:
     driver: bridge
+
+
+volumes:
+  static_volume:
+  certs:
+  html:
+  vhost:
