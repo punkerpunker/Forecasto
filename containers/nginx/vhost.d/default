@@ -1,4 +1,4 @@
-location /staticfiles/ {
-        alias /home/app/web/staticfiles/;
+location /static/ {
+        alias /app/HockeyManager/static/;
         add_header Access-Control-Allow-Origin *;
     }
