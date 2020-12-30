@@ -57,6 +57,8 @@ services:
       - vhost:/etc/nginx/vhost.d
       - html:/usr/share/nginx/html
       - /var/run/docker.sock:/var/run/docker.sock:ro
+    env_file:
+      - ./containers/letsencrypt/env.prod
 
   postgresql:
     container_name: postgresql
