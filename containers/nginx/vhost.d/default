@@ -1,4 +1,5 @@
 location /static/ {
         alias /app/HockeyManager/static/;
+        autoindex on;
         add_header Access-Control-Allow-Origin *;
     }
