@@ -48,8 +48,10 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
     depends_on:
       - web
+    labels:
+      - "com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy"
 
-  nginx-proxy-letsencrypt:
+  letsencrypt:
     image: jrcs/letsencrypt-nginx-proxy-companion
     env_file:
       - containers/nginx-proxy-letsencrypt/env.prod
