@@ -53,17 +53,14 @@ services:
 
   letsencrypt:
     image: jrcs/letsencrypt-nginx-proxy-companion
-    env_file:
-      - containers/nginx-proxy-letsencrypt/env.prod
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - certs:/etc/nginx/certs
-      - html:/usr/share/nginx/html
-      - vhost:/etc/nginx/vhost.d
+    container_name: nginx-proxy-lets-encrypt
     depends_on:
-      - nginx-proxy
-    networks:
-      - front
+      - "nginx-proxy"
+    volumes:
+      - certs:/etc/nginx/certs:rw
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - /var/run/docker.sock:/var/run/docker.sock:ro
 
   postgresql:
     container_name: postgresql
