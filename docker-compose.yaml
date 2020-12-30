@@ -11,8 +11,9 @@ services:
       - postgresql-front
     env_file:
       - containers/model/env.prod
+    depends_on:
+      - postgresql
 
-      
   web:
     build:
       context: containers/web
@@ -24,7 +25,17 @@ services:
       - postgresql-front
     env_file:
       - containers/web/env.prod
+    depends_on:
+      - postgresql
 
+  nginx:
+    image: nginx:1.19.0-alpine
+    ports:
+      - 1337:80
+    volumes:
+      - ./containers/nginx/conf.d:/etc/nginx/conf.d/
+    depends_on:
+      - web
   
   postgresql:
     container_name: postgresql
