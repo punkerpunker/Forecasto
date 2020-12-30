@@ -54,7 +54,7 @@ services:
     depends_on:
       - nginx-proxy
       - web
-    volumes-from:
+    volumes_from:
       - nginx-proxy
 
   postgresql:
