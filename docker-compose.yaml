@@ -8,7 +8,7 @@ services:
       - 1769:1769
     command: python3 app.py
     networks:
-      - postgresql-front
+      - front
     env_file:
       - containers/model/env.prod
     depends_on:
@@ -22,7 +22,7 @@ services:
       - 8000
     command: gunicorn --bind :8000 --workers 3 HockeyManager.wsgi:application
     networks: 
-      - postgresql-front
+      - front
     env_file:
       - containers/web/env.prod
     volumes:
@@ -35,6 +35,8 @@ services:
     build:
       context: containers/nginx
     restart: always
+    networks:
+      - front
     ports:
       - 443:443
       - 80:80
@@ -58,6 +60,8 @@ services:
       - vhost:/etc/nginx/vhost.d
     depends_on:
       - nginx-proxy
+    networks:
+      - front
 
   postgresql:
     container_name: postgresql
@@ -71,7 +75,7 @@ services:
     env_file:
       - containers/postgresql/env.prod
     networks:
-      - postgresql-front
+      - front
 
   pgadmin:
     container_name: pgadmin
@@ -81,13 +85,13 @@ services:
     ports:
       - "5050:5050"
     networks:
-      - postgresql-front
+      - front
     restart: unless-stopped
     depends_on:
       - postgresql
       
 networks:
-  postgresql-front:
+  front:
     driver: bridge
 
 
