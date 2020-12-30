@@ -22,7 +22,7 @@ services:
     env_file:
       - containers/web/env.prod
     volumes:
-      - static_files:/django/static:ro
+      - static_files:/django/static:rwx
     depends_on:
       - postgresql
 
@@ -35,7 +35,7 @@ services:
       - 443:443
       - 80:80
     volumes:
-      - static_files:/static:ro
+      - static_files:/static:rwx
       - certs:/etc/nginx/certs
       - html:/usr/share/nginx/html
       - vhost:/etc/nginx/vhost.d
