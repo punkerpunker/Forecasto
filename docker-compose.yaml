@@ -20,7 +20,7 @@ services:
     container_name: web
     ports:
       - 8000:8000
-    command: gunicorn --bind :8000 --workers 3 HockeyManager.wsgi:application
+    command: gunicorn --bind 0.0.0.0:8000 --workers 3 HockeyManager.wsgi:application
     env_file:
       - containers/web/env.prod
     volumes:
