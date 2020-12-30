@@ -37,7 +37,6 @@ services:
       - 80:80
     volumes:
       - ./containers/web/django/HockeyManager/static:/home/app/web/staticfiles
-      - ./containers/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - certs:/etc/nginx/certs
       - html:/usr/share/nginx/html
       - vhost:/etc/nginx/vhost.d
