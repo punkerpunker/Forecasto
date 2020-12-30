@@ -35,8 +35,6 @@ services:
     build:
       context: containers/nginx
     restart: always
-    networks:
-      - front
     ports:
       - 443:443
       - 80:80
@@ -56,8 +54,6 @@ services:
     container_name: nginx-proxy-lets-encrypt
     depends_on:
       - "nginx-proxy"
-    networks:
-      - front
     volumes:
       - NGINX_PROXY_CONTAINER=ngnix-proxy
       - certs:/etc/nginx/certs:rw
