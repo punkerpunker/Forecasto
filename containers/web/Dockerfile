@@ -15,4 +15,4 @@ RUN pip3 install gunicorn
 
 COPY django ./django
 WORKDIR django
-RUN python3 manage.py collectstatic --no-input
+RUN python3 manage.py collectstatic
