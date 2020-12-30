@@ -7,8 +7,6 @@ services:
     ports:
       - 1769:1769
     command: python3 app.py
-    networks:
-      - front
     env_file:
       - containers/model/env.prod
     depends_on:
@@ -71,8 +69,6 @@ services:
       - 5432:5432
     env_file:
       - containers/postgresql/env.prod
-    networks:
-      - front
 
   pgadmin:
     container_name: pgadmin
@@ -81,15 +77,9 @@ services:
       - containers/pgadmin/env.prod
     ports:
       - "5050:5050"
-    networks:
-      - front
     restart: unless-stopped
     depends_on:
       - postgresql
-      
-networks:
-  front:
-    driver: bridge
 
 
 volumes:
