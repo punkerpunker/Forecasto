@@ -28,15 +28,35 @@ services:
     depends_on:
       - postgresql
 
-  nginx:
-    image: nginx:1.19.0-alpine
+  nginx-proxy:
+    container_name: nginx-proxy
+    build:
+      context: containers/nginx
+    restart: always
     ports:
-      - 1337:80
+      - 443:443
+      - 80:80
     volumes:
-      - ./containers/nginx/conf.d:/etc/nginx/conf.d/
+      - /static/:/home/app/web/staticfiles
+      - certs:/etc/nginx/certs
+      - html:/usr/share/nginx/html
+      - vhost:/etc/nginx/vhost.d
+      - /var/run/docker.sock:/tmp/docker.sock:ro
     depends_on:
       - web
-  
+
+  nginx-proxy-letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    env_file:
+      - .env.staging.proxy-companion
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - certs:/etc/nginx/certs
+      - html:/usr/share/nginx/html
+      - vhost:/etc/nginx/vhost.d
+    depends_on:
+      - nginx-proxy
+
   postgresql:
     container_name: postgresql
     restart: always
