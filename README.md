@@ -1,2 +1,2 @@
 # Forecasto
-http://forecasto.ru/
+http://forecasto.live/
