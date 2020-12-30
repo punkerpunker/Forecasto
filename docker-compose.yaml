@@ -54,8 +54,11 @@ services:
     depends_on:
       - nginx-proxy
       - web
-    volumes_from:
-      - nginx-proxy
+    volumes:
+      - certs:/etc/nginx/certs
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - /var/run/docker.sock:/var/run/docker.sock:ro
 
   postgresql:
     container_name: postgresql
