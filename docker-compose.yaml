@@ -21,6 +21,8 @@ services:
     command: gunicorn --bind 0.0.0.0:8000 --workers 3 HockeyManager.wsgi:application
     env_file:
       - containers/web/env.prod
+    volumes:
+      - /static:/django/static
     depends_on:
       - postgresql
 
@@ -33,7 +35,7 @@ services:
       - 443:443
       - 80:80
     volumes:
-      - ./django/static:/static/
+      - /static:/static
       - certs:/etc/nginx/certs
       - html:/usr/share/nginx/html
       - vhost:/etc/nginx/vhost.d
