@@ -25,6 +25,8 @@ services:
       - postgresql-front
     env_file:
       - containers/web/env.prod
+    volumes:
+      - containers/web/django/HockeyManager/static:/home/app/web/staticfiles
     depends_on:
       - postgresql
 
@@ -37,7 +39,7 @@ services:
       - 443:443
       - 80:80
     volumes:
-      - static_volume:/home/app/web/staticfiles
+      - containers/web/django/HockeyManager/static:/home/app/web/staticfiles
       - certs:/etc/nginx/certs
       - html:/usr/share/nginx/html
       - vhost:/etc/nginx/vhost.d
