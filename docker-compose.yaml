@@ -9,12 +9,9 @@ services:
     command: python3 app.py
     networks:
       - postgresql-front
-    environment:
-      - PORT=1769
-      - DB_NAME=postgres
-      - DB_HOSTNAME=postgresql
-      - DB_USER=postgres
-      - DB_PASSWORD=tttBBB777
+    env_file:
+      - containers/model/env.prod
+
       
   web:
     build:
@@ -22,16 +19,12 @@ services:
     container_name: web
     ports:
       - 80:8000
-    command: python3 manage.py runserver 0.0.0.0:8000
+    command: gunicorn --bind :8000 --workers 3 HockeyManager.wsgi:application
     networks: 
       - postgresql-front
-    environment:
-      - PORT=8000
-      - DB_NAME=HockeyManager
-      - DB_HOSTNAME=postgresql
-      - DB_USER=postgres
-      - DB_PASSWORD=tttBBB777
-      - MODEL_HOST=model
+    env_file:
+      - containers/web/env.prod
+
   
   postgresql:
     container_name: postgresql
@@ -42,19 +35,16 @@ services:
       - ./containers/postgresql/tables.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - 5432:5432
-    environment:
-      - POSTGRES_PASSWORD=tttBBB777
+    env_file:
+      - containers/postgresql/env.prod
     networks:
       - postgresql-front
 
   pgadmin:
     container_name: pgadmin
     image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: vazheningleb@gmail.com
-      PGADMIN_DEFAULT_PASSWORD: tttBBB777
-      PGADMIN_LISTEN_PORT: 5050
-      PGADMIN_LISTEN_ADDRESS: 0.0.0.0
+    env_file:
+      - containers/pgadmin/env.prod
     ports:
       - "5050:5050"
     networks:
