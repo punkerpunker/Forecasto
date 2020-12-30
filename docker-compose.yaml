@@ -53,6 +53,7 @@ services:
     container_name: nginx-proxy-lets-encrypt
     depends_on:
       - nginx-proxy
+      - web
     volumes:
       - certs:/etc/nginx/certs:rw
       - vhost:/etc/nginx/vhost.d
