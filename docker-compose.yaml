@@ -18,8 +18,8 @@ services:
     build:
       context: containers/web
     container_name: web
-    expose:
-      - 8000
+    ports:
+      - 8000:8000
     command: gunicorn --bind :8000 --workers 3 HockeyManager.wsgi:application
     networks: 
       - front
