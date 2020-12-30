@@ -21,8 +21,6 @@ services:
     ports:
       - 8000:8000
     command: gunicorn --bind :8000 --workers 3 HockeyManager.wsgi:application
-    networks: 
-      - front
     env_file:
       - containers/web/env.prod
     volumes:
