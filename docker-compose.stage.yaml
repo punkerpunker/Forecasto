@@ -1,0 +1,90 @@
+version: "3.3"
+services:
+  model:
+    build:
+      context: containers/model
+    container_name: model
+    ports:
+      - 1769:1769
+    command: python3 app.py
+    env_file:
+      - containers/model/env.prod
+    depends_on:
+      - postgresql
+
+  web:
+    build:
+      context: containers/web
+    container_name: web
+    ports:
+      - 8000:8000
+    command: gunicorn --bind 0.0.0.0:8000 --workers 3 HockeyManager.wsgi:application
+    env_file:
+      - containers/web/env.stage
+    volumes:
+      - static_files:/django/static:rw
+    depends_on:
+      - postgresql
+
+  nginx-proxy:
+    container_name: nginx-proxy
+    build:
+      context: containers/nginx
+    restart: always
+    ports:
+      - 443:443
+      - 80:80
+    volumes:
+      - static_files:/static:rw
+      - certs:/etc/nginx/certs
+      - html:/usr/share/nginx/html
+      - vhost:/etc/nginx/vhost.d
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    depends_on:
+      - web
+    labels:
+      - "com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy"
+
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: nginx-proxy-lets-encrypt
+    depends_on:
+      - nginx-proxy
+      - web
+    volumes:
+      - certs:/etc/nginx/certs
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    env_file:
+      - ./containers/letsencrypt/env.stage
+
+  postgresql:
+    container_name: postgresql
+    restart: always
+    image: pgrouting/pgrouting:13-3.0-3.1.0
+    volumes:
+      - ./containers/postgresql/data:/var/lib/postgresql/data
+      - ./containers/postgresql/tables.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 5432:5432
+    env_file:
+      - containers/postgresql/env.prod
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    env_file:
+      - containers/pgadmin/env.prod
+    ports:
+      - "5050:5050"
+    restart: unless-stopped
+    depends_on:
+      - postgresql
+
+
+volumes:
+  certs:
+  html:
+  vhost:
+  static_files:
