@@ -58,7 +58,7 @@ def create_stats_graph(player_stats_df, predict=False, predict_params=None):
     # Стакаем голы и ассисты
     fig.update_layout(barmode='stack', autosize=True)
 
-    graph = fig.to_html(full_html=True)
+    graph = fig.to_html(full_html=False, include_plotlyjs=False)
     return graph
 
 
