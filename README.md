@@ -1,2 +1,2 @@
 # Forecasto
-http://forecasto.live/
+https://forecasto.live/
