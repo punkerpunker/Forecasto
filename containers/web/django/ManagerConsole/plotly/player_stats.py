@@ -58,7 +58,7 @@ def create_stats_graph(player_stats_df, predict=False, predict_params=None):
     # Стакаем голы и ассисты
     fig.update_layout(barmode='stack', autosize=True)
 
-    graph = fig.to_html(full_html=False, include_plotlyjs=False)
+    graph = fig.to_html(full_html=True, include_plotlyjs=False)
     return graph
 
 
@@ -70,7 +70,6 @@ def make_prediction(stats, predict_params):
     goals = int(prediction['goals'])
     assists = int(prediction['assists'])
     season = prediction['season']
-    print(season)
     stats = stats.append(pd.DataFrame([{'goals': goals, 'assists': assists,
                                         'season': season, 'games': games}]))
     return stats
